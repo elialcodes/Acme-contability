@@ -1,3 +1,9 @@
+//With this file we obtain the information from the database.
+//We import sql funtion from vercel/postgres.
+//This file use async/await functions and SQL scripts.
+//The received data from database will be imported by the components
+//to be rendered.
+
 import { sql } from '@vercel/postgres';
 import {
   CustomerField,
@@ -50,9 +56,13 @@ export async function fetchLatestInvoices() {
 
 export async function fetchCardData() {
   try {
-    // You can probably combine these into a single SQL query
-    // However, we are intentionally splitting them to demonstrate
-    // how to initialize multiple queries in parallel with JS.
+    //We can probably combine these into a single SQL query and the requests
+    //will in cascada shape (one after another).
+    //But we also can do avoid the resquests in cascada and to be executed
+    //at the same time:
+    //- we write 3 const with script SQL
+    //- we use Promise.all() to execute the 3 at the same time.
+
     const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
     const customerCountPromise = sql`SELECT COUNT(*) FROM customers`;
     const invoiceStatusPromise = sql`SELECT

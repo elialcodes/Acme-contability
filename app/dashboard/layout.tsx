@@ -4,11 +4,14 @@
 //the pages nested in the same folder.
 //A layout.tsx file recives children as a prop. Children will
 //automatically be the nested pages in the same folder.
-//An advantage by using layout.tsx file is that only the components in the page
-//will be updated, not the layout (the part in common). This is called "partial
-//rendering".
+//An advantage by using layout.tsx file, the layout (the part in common) wont´t
+//be updated (re-rendered), only the components in the page will. This is
+//called "partial rendering".
 
 import SideNav from '@/app/ui/dashboard/sidenav';
+
+//We add experimenta_ppr (pre-partial rendering) as setting option
+export const experimental_ppr = true;
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

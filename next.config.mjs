@@ -1,5 +1,12 @@
 /** @type {import('next').NextConfig} */
 
-const nextConfig = {};
+//Partial pre-rendering is useful to combinate static,
+//dinamic rendering and streaming, all in the same route.
+//Partial pre-rendering is going to be availabe with this code:
+const nextConfig = {
+  experimental: {
+    ppr: 'incremental',
+  },
+};
 
 export default nextConfig;
