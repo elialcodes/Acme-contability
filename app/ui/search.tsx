@@ -1,10 +1,10 @@
-//"use client" because this is a client component (it can use
-//eventlistener and hook for events):
+//"use client" because this is a client component (we can use
+//eventlistener and hook for events in it):
 'use client';
 import { useDebouncedCallback } from 'use-debounce'; //a debounce library
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-//useSearchParams: a client component hook that lets you read the current URL's search parameters.
-//usePathName: a client component hook that lets you read the current URL's pathname.
+//useSearchParams: a client component hook to access to the search parameters of a url.
+//usePathName: a client component hook to read a complete URL's pathname.
 //useRouter: this hook allows you to change routes inside a client component.
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
@@ -13,13 +13,13 @@ export default function Search({ placeholder }: { placeholder: string }) {
   const pathname = usePathname(); //a constant with the hook
   const { replace } = useRouter();
 
+  //function with a debounce:
   const handleSearch = useDebouncedCallback((term: string) => {
-    //URLSearchParams is a constructor that creates an object with the string
-    //params of a url. We create a new instance for the current url
-    //using the searchParams constant
+    //URLSearchParams is a constructor that creates an object with the search
+    //params of a url. We create a new instance using the hook inside searchParams constant
     const params = new URLSearchParams(searchParams);
-    //if term, we set the value of query with the text written by the user in the input
-    //else, we delete it
+    //if the user writes anything in the input (term exists), we set the value of query
+    //with the text written by the user, else, we delete it
     if (term) {
       params.set('query', term);
     } else {

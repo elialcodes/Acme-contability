@@ -8,8 +8,8 @@ import { CreateInvoice } from '@/app/ui/invoices/buttons';
 import { lusitana } from '@/app/ui/fonts';
 import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
-//in this file, the dates will be obtained from the server and passed to the
-//component as a prop
+//in this file, the information will be obtained from the server with
+//fetchInvoicesPages function and passed to the component as a prop
 import { fetchInvoicesPages } from '@/app/lib/data';
 
 export default async function Page({
@@ -25,8 +25,8 @@ export default async function Page({
   const currentPage = Number(searchParams?.page) || 1;
 
   //fetchInvoicesPages returns the total number of pages acording to
-  //the query (for example, if 12 invoices match the query,
-  //and each page shows 6 invoices, there will be 2 pages of invoices )
+  //the query (for example, the design shows 6 invoices per page, if 12 invoices match
+  //the query, there will be 2 pages of invoices)
   const totalPages = await fetchInvoicesPages(query);
   return (
     <div className="w-full">

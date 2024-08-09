@@ -9,7 +9,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { generatePagination } from '@/app/lib/utils';
-//useSearchParams: a client component hook that lets you read the current URL's search parameters.
+//useSearchParams: a client component hook that lets you access the URL's search parameters.
 //usePathName: a client component hook that lets you read the current URL's pathname.
 import { useSearchParams, usePathname } from 'next/navigation';
 
@@ -20,7 +20,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
   const currentPage = Number(searchParams.get('page')) || 1;
 
   //function to set a new number page using searchParams and to create the url:
-  //URLSearchParams is a constructor that creates an object with the string
+  //URLSearchParams is a constructor that creates an object with the search
   //params of a url. We create a new instance for the current url using
   //the searchParams constant
   const createPageURL = (pageNumber: number | string) => {
