@@ -37,11 +37,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
       {/*  NOTE: Uncomment this code in Chapter 11 */}
 
       <div className="inline-flex">
-        <PaginationArrow
-          direction="left"
-          href={createPageURL(currentPage - 1)}
-          isDisabled={currentPage <= 1}
-        />
+        <PaginationArrow direction="left" href={createPageURL(currentPage - 1)} isDisabled={currentPage <= 1} />
 
         <div className="flex -space-x-px">
           {allPages.map((page, index) => {
@@ -118,8 +114,7 @@ function PaginationArrow({
     'ml-2 md:ml-4': direction === 'right',
   });
 
-  const icon =
-    direction === 'left' ? <ArrowLeftIcon className="w-4" /> : <ArrowRightIcon className="w-4" />;
+  const icon = direction === 'left' ? <ArrowLeftIcon className="w-4" /> : <ArrowRightIcon className="w-4" />;
 
   return isDisabled ? (
     <div className={className}>{icon}</div>

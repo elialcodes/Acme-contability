@@ -8,6 +8,7 @@ import { lusitana } from '@/app/ui/fonts';
 import { Suspense } from 'react';
 import { LatestInvoicesSkeleton, RevenueChartSkeleton, CardsSkeleton } from '@/app/ui/skeletons';
 
+// eslint-disable-next-line @typescript-eslint/require-await
 export default async function Page() {
   return (
     <main>
