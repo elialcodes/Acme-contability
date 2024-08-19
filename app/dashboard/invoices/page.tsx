@@ -21,7 +21,7 @@ export default async function Page({
   };
 }) {
   //we obtain searchParams from Search component
-  const query = searchParams?.query || '';
+  const query = searchParams?.query ?? '';
   const currentPage = Number(searchParams?.page) || 1;
 
   //fetchInvoicesPages returns the total number of pages acording to

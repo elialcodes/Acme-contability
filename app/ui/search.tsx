@@ -11,6 +11,7 @@ import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 export default function Search({ placeholder }: { placeholder: string }) {
   const searchParams = useSearchParams(); //a constant with the hook
   const pathname = usePathname(); //a constant with the hook
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   const { replace } = useRouter();
 
   //function with a debounce:
