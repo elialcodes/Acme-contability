@@ -10,7 +10,8 @@
 
 import SideNav from '@/app/ui/dashboard/sidenav';
 
-//We add experimenta_ppr (pre-partial rendering) as setting option
+//We add experimenta_ppr (pre-partial rendering) as setting option to join static
+//dinamic render in the same route.
 export const experimental_ppr = true;
 
 export default function Layout({ children }: { children: React.ReactNode }) {

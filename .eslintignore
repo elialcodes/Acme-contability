@@ -1,0 +1,6 @@
+node_modules/*
+.next/*
+
+.eslintrc.js
+next.config.mjs
+pnpm-lock.yaml

@@ -16,7 +16,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
   //function with a debounce:
   const handleSearch = useDebouncedCallback((term: string) => {
     //URLSearchParams is a constructor that creates an object with the search
-    //params of a url. We create a new instance using the hook inside searchParams constant
+    //params of a url. We create a new instance using as paremeter the hook inside searchParams constant
     const params = new URLSearchParams(searchParams);
     //if the user writes anything in the input (term exists), we set the value of query
     //with the text written by the user, else, we delete it
@@ -25,6 +25,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
     } else {
       params.delete('query');
     }
+    //this component is rendered in dashboard/invoices page.tsx:
     //we join the current url, ?, and the search params: if the user writes "Bob" in the input,
     //the url will be /dashboard/invoices?query=Bob
     replace(`${pathname}?${params.toString()}`);
