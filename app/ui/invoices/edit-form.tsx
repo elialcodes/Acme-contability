@@ -1,13 +1,16 @@
 'use client';
 
 import { CustomerField, InvoiceForm } from '@/app/lib/definitions';
+import { updateInvoice } from '@/app/lib/actions';
 import { CheckIcon, ClockIcon, CurrencyDollarIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { Button } from '@/app/ui/button';
 
 export default function EditInvoiceForm({ invoice, customers }: { invoice: InvoiceForm; customers: CustomerField[] }) {
+  const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);
   return (
-    <form>
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    <form action={updateInvoiceWithId}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Customer Name */}
         <div className="mb-4">

@@ -25,8 +25,8 @@ export default async function Page({
   const currentPage = Number(searchParams?.page) || 1;
 
   //fetchInvoicesPages returns the total number of pages acording to
-  //the query (for example, the design shows 6 invoices per page, if 12 invoices match
-  //the query, there will be 2 pages of invoices)
+  //the query (for example, the design shows 6 invoices per page by
+  //defoult, if 12 invoices match the query, there will be 2 pages)
   const totalPages = await fetchInvoicesPages(query);
   return (
     <div className="w-full">

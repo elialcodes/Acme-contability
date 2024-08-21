@@ -5,13 +5,7 @@ module.exports = {
     node: true,
   },
   parser: '@typescript-eslint/parser',
-  plugins: [
-    '@typescript-eslint',
-    'react',
-    'react-hooks',
-    'jsx-a11y',
-    'prettier',
-  ],
+  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'jsx-a11y', 'prettier'],
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
