@@ -39,10 +39,14 @@ export async function createInvoice(formData: FormData) {
   const date = new Date().toISOString().split('T')[0]; //
 
   //we will insert the information in our DB with this SQL query
-  await sql`
+  try {
+    await sql`
     INSERT INTO invoices (customer_id, amount, status, date)
     VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
   `;
+  } catch (error) {
+    return { message: 'Database Error: Failed to Create Invoice' };
+  }
 
   //we delete the previous cache of the route in Next with this line
   //so, we prepare it to make a new request to the server.
@@ -65,11 +69,15 @@ export async function updateInvoice(id: string, formData: FormData) {
 
   const amountInCents = amount * 100;
 
-  await sql`
-    UPDATE invoices
-    SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
-    WHERE id = ${id}
-  `;
+  try {
+    await sql`
+  UPDATE invoices
+  SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
+  WHERE id = ${id}
+`;
+  } catch (error) {
+    return { message: 'Database Error: Failed to Update Invoice.' };
+  }
 
   revalidatePath('/dashboard/invoices');
 
@@ -78,6 +86,11 @@ export async function updateInvoice(id: string, formData: FormData) {
 
 //server action to delete an invoice
 export async function deleteInvoice(id: string) {
-  await sql`DELETE FROM invoices WHERE id = ${id}`;
-  revalidatePath('/dashboard/invoices');
+  try {
+    await sql`DELETE FROM invoices WHERE id = ${id}`;
+    revalidatePath('/dashboard/invoices');
+    return { message: 'Deleted Invoice.' };
+  } catch (error) {
+    return { message: 'Database Error: Failed to Delete Invoice.' };
+  }
 }
