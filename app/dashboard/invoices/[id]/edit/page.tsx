@@ -16,9 +16,9 @@ export default async function Page({ params }: { params: { id: string } }) {
   //we obtain the constants invoice y customer from the all the Promises
   const [invoice, customers] = await Promise.all([fetchInvoiceById(id), fetchCustomers()]);
 
-  //if there is no any invoices, we return the function notFound that searchs and renders
-  //the file not-found.tsx, a special Next file to render an interface inside a specific
-  //route segment
+  //if there is no any invoices with that id, we return the function notFound
+  //that searchs and renders the file not-found.tsx, a special Next file to render
+  //an interface inside a specific route segment ()
   if (!invoice) {
     notFound();
   }

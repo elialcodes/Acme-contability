@@ -1,18 +1,33 @@
 //file with a espedific form to create a new invoice
 
+'use client'; //this component will use a hook, so it has to be a client component
+//we import the hook to manage an action server: to validate the information that user
+//types in the form:
+import { useActionState } from 'react';
 import { CustomerField } from '@/app/lib/definitions';
 import Link from 'next/link';
 import { CheckIcon, ClockIcon, CurrencyDollarIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
-import { createInvoice } from '@/app/lib/actions';
+import { createInvoice, StateError } from '@/app/lib/actions'; //we import the function and the type StateError
 
 export default function Form({ customers }: { customers: CustomerField[] }) {
+  //a constant with the initial state
+  const initialState: StateError = {
+    errors: {},
+    message: null,
+  };
+  //state with useActionState (like a normal useState), we use it to manage a
+  //state in the server side. This state is used to validate the information
+  //that the user types in create invoices form.
+  //2 values:
+  //1. state (state of the form, setted as initial State)
+  //2. formAction (function that will be invocated when the form was sent, setted as createInvoice)
+  const [state, formAction] = useActionState<StateError>(initialState, createInvoice);
   return (
     //action atribute includes an url or a place where the information
     //will be sent. Here, we are execute a function to send the information
     //to the BS trough a sql.
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <form action={createInvoice}>
+    <form action={formAction}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Customer Name */}
         <div className="mb-4">
@@ -25,6 +40,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
               name="customerId"
               className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               defaultValue=""
+              aria-describedby="customer-error"
             >
               <option value="" disabled>
                 Select a customer
@@ -36,6 +52,14 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
               ))}
             </select>
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+          </div>
+          <div id="customer-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.customerId &&
+              state.errors.customerId.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
           </div>
         </div>
 

@@ -1,6 +1,8 @@
-//this is a special Next file to rendenring an special interface (in this case a message
-//with an 404 error and a Go Back button). This file is searched and rendered by
-//page.tsx file from the same folder
+//this is a special next file, when page.tsx file returns an error
+//(specially when a resource doesn´t exist, 404 error), Next searches
+//the not-found.tsx file in the same folder to show an specefic interface
+//to the user (in this case a message with an 404 error and a Go Back button).
+
 import Link from 'next/link';
 import { FaceFrownIcon } from '@heroicons/react/24/outline';
 

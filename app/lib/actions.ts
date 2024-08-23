@@ -1,6 +1,6 @@
 //file with server actions, functions to create, update and delete invoices.
 //These server actions will be executed in the server side and will be invocated
-//from their respective forms.
+//in their respective forms.
 
 'use server'; //with this line we say all functions are server actions
 
@@ -10,27 +10,58 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 //we define a template or schema zod with the same structure than our dates
+//and in the inputs to type, if the user make an invalid type error, a nice message
+//will be returned
 const FormSchema = z.object({
   id: z.string(),
-  customerId: z.string(),
-  amount: z.coerce.number(), //parse from string to number
-  status: z.enum(['pending', 'paid']),
+  customerId: z.string({
+    invalid_type_error: 'Please select a customer.', //nice message if the user types a mistake
+  }),
+  amount: z.coerce
+    .number() //parse from string to number
+    .gt(0, { message: 'Please enter an amount greater than $0.' }), //nice message if the user types a mistake
+  status: z.enum(['pending', 'paid'], {
+    invalid_type_error: 'Please select an invoice status.', //nice message if the user types a mistake
+  }),
   date: z.string(),
 });
+
+//interface to determinate that errors happends when there is no any string
+//and types message (a nice message errors if the customer types a mistake)
+export interface StateError {
+  errors?: {
+    customerId?: string[];
+    amount?: string[];
+    status?: string[];
+  };
+  message?: string | null;
+}
 
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
 const UpdateInvoice = FormSchema.omit({ id: true, date: true });
 
-//server action to create an invoice
-export async function createInvoice(formData: FormData) {
-  //this function is invocated in the form to create an invoice, so
-  //we make constants, parse them acording to FormSchema
-  //and we get them from the formData object from its especific form
-  const { customerId, amount, status } = CreateInvoice.parse({
+//server action to create an invoice:
+//this function is invocated in the specific form to create an invoice (in
+//the action atribute)
+//we don´t use the argument prevState in this case, but it is a requiered prop
+export async function createInvoice(prevState: StateError, formData: FormData) {
+  //we parse acording the FormSchema and we get the values from the formData object
+  //safeParse will return an object that contains a success or an error
+  const validatedFields = CreateInvoice.safeParse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
     status: formData.get('status'),
   });
+
+  //if form validation fails, return errors. Otherwise, continue.
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Create Invoice.',
+    };
+  }
+  //we get the constants and prepare data for insertion into the database
+  const { customerId, amount, status } = validatedFields.data;
 
   //we parse the amount in cents to avoid floats
   const amountInCents = amount * 100;
@@ -49,7 +80,8 @@ export async function createInvoice(formData: FormData) {
   }
 
   //we delete the previous cache of the route in Next with this line
-  //so, we prepare it to make a new request to the server.
+  //so, we clean and prepare the cache to save a new route with
+  //a new request to the server.
   revalidatePath('/dashboard/invoices');
 
   //after the user creates a new invoice, we can redirect him

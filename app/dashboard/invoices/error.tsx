@@ -1,9 +1,14 @@
+//this is a special Next file, when page.tsx file returns an error
+//(any kind of error), Next searches the error.tsx file in the same folder
+//to show an specefic interface to the user
+//(in this case a message Something went wrong).
+
 'use client'; //this is a client component
 
 import { useEffect } from 'react';
 
-//there will be 2 props: error (it is an instance of Error (a native JavaScript objet)
-//and reset (it is a function to come back to the previous route segment)
+//2 props: error (it is an instance of Error (a native JavaScript objet)
+//and reset function (to reset and come back to the previous route segment)
 export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
     // Optionally log the error to an error reporting service
