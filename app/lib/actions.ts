@@ -44,6 +44,7 @@ const UpdateInvoice = FormSchema.omit({ id: true, date: true });
 //this function is invocated in the specific form to create an invoice (in
 //the action atribute)
 //we don´t use the argument prevState in this case, but it is a requiered prop
+//formData is an object (a group of key-value pairs with all the form fields)
 export async function createInvoice(prevState: StateError, formData: FormData) {
   //we parse acording the FormSchema and we get the values from the formData object
   //safeParse will return an object that contains a success or an error
@@ -108,6 +109,7 @@ export async function updateInvoice(id: string, formData: FormData) {
   WHERE id = ${id}
 `;
   } catch (error) {
+    //we return an error message when the insert in DB fails
     return { message: 'Database Error: Failed to Update Invoice.' };
   }
 

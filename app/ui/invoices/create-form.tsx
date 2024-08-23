@@ -1,33 +1,33 @@
 //file with a espedific form to create a new invoice
 
 'use client'; //this component will use a hook, so it has to be a client component
-//we import the hook to manage an action server: to validate the information that user
-//types in the form:
-import { useActionState } from 'react';
+
 import { CustomerField } from '@/app/lib/definitions';
 import Link from 'next/link';
 import { CheckIcon, ClockIcon, CurrencyDollarIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
-import { createInvoice, StateError } from '@/app/lib/actions'; //we import the function and the type StateError
+//we import the function and the type StateError
+import { createInvoice, StateError } from '@/app/lib/actions';
+//we import the hook to managing the information that user types in the form:
+import { useFormState } from 'react-dom';
 
 export default function Form({ customers }: { customers: CustomerField[] }) {
-  //a constant with the initial state
+  //a constant with the initial state of the inputs validation
   const initialState: StateError = {
-    errors: {},
     message: null,
+    errors: {},
   };
-  //state with useActionState (like a normal useState), we use it to manage a
-  //state in the server side. This state is used to validate the information
-  //that the user types in create invoices form.
-  //2 values:
-  //1. state (state of the form, setted as initial State)
-  //2. formAction (function that will be invocated when the form was sent, setted as createInvoice)
-  const [state, formAction] = useActionState(createInvoice, initialState);
+  //state with useFormState (like a normal useState), in this case,
+  //we use it to managing the inputs validation and to make an action with them.
+  //useFormState accepts 2 argument:
+  //1. state (state of the inputs validation, setted as initial State)
+  //2. action (function that will be invocated when the form was sent, setted as createInvoice)
+  const [state, action] = useFormState(createInvoice, initialState);
   return (
     //action atribute includes an url or a place where the information
-    //will be sent. Here, we are execute a function to send the information
-    //to the BS trough a sql.
-    <form action={formAction}>
+    //will be sent. Here, we are executing createInvoice, a function to validate the fields form
+    //to send the information to the BS with a sql query and to create an new invoice
+    <form action={action}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Customer Name */}
         <div className="mb-4">
@@ -81,6 +81,14 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
               <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
           </div>
+          <div id="amount-error" aria-live="polite" aria-atomic="true">
+            {/* only if error and amount exist, we make a map */}
+            {state.errors?.amount?.map((error: string) => (
+              <p className="mt-2 text-sm text-red-500" key={error}>
+                {error}
+              </p>
+            ))}
+          </div>
         </div>
 
         {/* Invoice Status */}
@@ -118,6 +126,14 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                   Paid <CheckIcon className="h-4 w-4" />
                 </label>
               </div>
+            </div>
+            <div id="status-error" aria-live="polite" aria-atomic="true">
+              {/* only if error and status exist, we make a map */}
+              {state.errors?.status?.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
             </div>
           </div>
         </fieldset>
