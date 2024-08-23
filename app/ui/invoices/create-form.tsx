@@ -17,16 +17,16 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
     message: null,
     errors: {},
   };
-  //state with useFormState (like a normal useState), in this case,
-  //we use it to managing the inputs validation and to make an action with them.
+  //hook useFormState, in this case, we use it to managing
+  //the validation of the inputs and to make an action with them.
   //useFormState accepts 2 argument:
   //1. state (state of the inputs validation, setted as initial State)
   //2. action (function that will be invocated when the form was sent, setted as createInvoice)
   const [state, action] = useFormState(createInvoice, initialState);
   return (
-    //action atribute includes an url or a place where the information
-    //will be sent. Here, we are executing createInvoice, a function to validate the fields form
-    //to send the information to the BS with a sql query and to create an new invoice
+    //in a form, action atribute includes an url or a place where the information
+    //will be sent. Here, we are executing createInvoice, a function to validate the fields form,
+    //sending the information to the BS with a sql query and creating an new invoice
     <form action={action}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Customer Name */}

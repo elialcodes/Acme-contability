@@ -9,25 +9,27 @@ import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-//we define a template or schema zod with the same structure than our dates
-//and in the inputs to type, if the user make an invalid type error, a nice message
-//will be returned
+//we define a template (or schema) zod with the same structure than our dates
+//and in the inputs, if the user types an error, a nice message will be returned
 const FormSchema = z.object({
   id: z.string(),
   customerId: z.string({
-    invalid_type_error: 'Please select a customer.', //nice message if the user types a mistake
+    invalid_type_error: 'Please select a customer.', //nice message
   }),
   amount: z.coerce
     .number() //parse from string to number
-    .gt(0, { message: 'Please enter an amount greater than $0.' }), //nice message if the user types a mistake
+    .gt(0, { message: 'Please enter an amount greater than $0.' }), //nice message
   status: z.enum(['pending', 'paid'], {
-    invalid_type_error: 'Please select an invoice status.', //nice message if the user types a mistake
+    invalid_type_error: 'Please select an invoice status.', //nice message
   }),
   date: z.string(),
 });
 
-//interface to determinate that errors happends when there is no any string
-//and types message (a nice message errors if the customer types a mistake)
+//interface for:
+//errors in each field (customerId, amount and status if user makes a mistakes,
+//the error will be an array of string, I really don´t know why)
+//message (nice message error if the customer doesn´t types and
+//tries to send the form)
 export interface StateError {
   errors?: {
     customerId?: string[];
@@ -47,14 +49,21 @@ const UpdateInvoice = FormSchema.omit({ id: true, date: true });
 //formData is an object (a group of key-value pairs with all the form fields)
 export async function createInvoice(prevState: StateError, formData: FormData) {
   //we parse acording the FormSchema and we get the values from the formData object
-  //safeParse will return an object that contains a success or an error
+  //safeParse will return an object that contains:
+  //1. data: fields information
+  //2. success prop (boolean)
+  //3. errors prop (boolean)
   const validatedFields = CreateInvoice.safeParse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
     status: formData.get('status'),
   });
 
-  //if form validation fails, return errors. Otherwise, continue.
+  //if form validation fails, return an object with 2 props:
+  //1. errors: an object that return all of errors, with
+  //flatten().fieldErrors we can convert these errors into simple format
+  //(flatten() aplana, lo hace algo más sencillo y legible)
+  //2. message: a general message that says missing fields
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
