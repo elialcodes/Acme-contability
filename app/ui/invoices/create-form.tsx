@@ -22,7 +22,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
   //2 values:
   //1. state (state of the form, setted as initial State)
   //2. formAction (function that will be invocated when the form was sent, setted as createInvoice)
-  const [state, formAction] = useActionState<StateError>(initialState, createInvoice);
+  const [state, formAction] = useActionState(createInvoice, initialState);
   return (
     //action atribute includes an url or a place where the information
     //will be sent. Here, we are execute a function to send the information
@@ -54,12 +54,12 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
           <div id="customer-error" aria-live="polite" aria-atomic="true">
-            {state.errors?.customerId &&
-              state.errors.customerId.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                  {error}
-                </p>
-              ))}
+            {/* only if error and customerId exist, we make a map */}
+            {state.errors?.customerId?.map((error: string) => (
+              <p className="mt-2 text-sm text-red-500" key={error}>
+                {error}
+              </p>
+            ))}
           </div>
         </div>
 

@@ -28,6 +28,5 @@ module.exports = {
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 0,
     'prettier/prettier': 'error',
-    'prefer-optioanl-chain': 'off',
   },
 };
