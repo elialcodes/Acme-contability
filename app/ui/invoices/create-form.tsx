@@ -20,8 +20,8 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
   //hook useFormState, in this case, we use it to managing
   //the validation of the inputs and to make an action with them.
   //useFormState accepts 2 argument:
-  //1. state (state of the inputs validation, setted as initial State)
-  //2. action (function that will be invocated when the form was sent, setted as createInvoice)
+  //1. state (state of the inputs validation, setted as initialState)
+  //2. action (function that will be invocated when the form is sent, setted as createInvoice)
   const [state, action] = useFormState(createInvoice, initialState);
   return (
     //in a form, action atribute includes an url or a place where the information

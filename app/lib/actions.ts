@@ -1,4 +1,4 @@
-//file with server actions, functions to create, update and delete invoices.
+//file with server actions: functions to create, update and delete invoices.
 //These server actions will be executed in the server side and will be invocated
 //in their respective forms.
 
@@ -9,8 +9,8 @@ import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-//we define a template (or schema) zod with the same structure than our dates
-//and in the inputs, if the user types an error, a nice message will be returned
+//we define a template (or schema) zod with the same structure than our dates.
+//in the inputs, if the user types an error, a nice message will be returned
 const FormSchema = z.object({
   id: z.string(),
   customerId: z.string({
@@ -46,21 +46,23 @@ const UpdateInvoice = FormSchema.omit({ id: true, date: true });
 //this function is invocated in the specific form to create an invoice (in
 //the action atribute)
 //we don´t use the argument prevState in this case, but it is a requiered prop
-//formData is an object (a group of key-value pairs with all the form fields)
-export async function createInvoice(prevState: StateError, formData: FormData) {
-  //we parse acording the FormSchema and we get the values from the formData object
-  //safeParse will return an object that contains:
-  //1. data: fields information
+//in create-form.tsx when we use the hook useFormState.
+//FormData is a constructor, and it´s an object
+//(a group of key-value pairs with all the form fields)
+export async function createInvoice(_prevState: StateError, formData: FormData) {
+  //we parse acording the FormSchema and we get the values from the FormData object:
+  //we use safeParse method, and it will return an object that contains:
+  //1. data: fields information (customerId, amount, status)
   //2. success prop (boolean)
-  //3. errors prop (boolean)
+  //3. errors prop (contains information about the error)
   const validatedFields = CreateInvoice.safeParse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
     status: formData.get('status'),
   });
 
-  //if form validation fails, return an object with 2 props:
-  //1. errors: an object that return all of errors, with
+  //if form validation fails, return an object with 2 keys:
+  //1. errors: an object with all the information about the error, and with
   //flatten().fieldErrors we can convert these errors into simple format
   //(flatten() aplana, lo hace algo más sencillo y legible)
   //2. message: a general message that says missing fields
