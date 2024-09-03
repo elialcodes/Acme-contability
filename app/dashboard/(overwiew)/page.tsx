@@ -7,6 +7,14 @@ import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
 import { lusitana } from '@/app/ui/fonts';
 import { Suspense } from 'react';
 import { LatestInvoicesSkeleton, RevenueChartSkeleton, CardsSkeleton } from '@/app/ui/skeletons';
+import { Metadata } from 'next';
+
+//metadata object to be includes in this page, and it would override
+//the metadata object of the parent page if this one wouldn´t have
+//a template in his metadada object.
+export const metadata: Metadata = {
+  title: 'Dashboard',
+};
 
 // eslint-disable-next-line @typescript-eslint/require-await
 export default async function Page() {

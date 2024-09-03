@@ -1,4 +1,5 @@
-//file with server actions: functions to create, update and delete invoices.
+//file with server actions: functions to create, update and delete invoices
+//and authenticate function
 //These server actions will be executed in the server side and will be invocated
 //in their respective forms.
 
@@ -8,8 +9,10 @@ import { z } from 'zod'; //library zod to validate types
 import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { signIn } from '@/auth'; //we import signIn function from auth.ts file
+import { AuthError } from 'next-auth'; //we have istalled NextAuth previously
 
-//we define a template (or schema) zod with the same structure than our dates.
+//we define a template (or schema) zod with the same structure than our invoices forms dates.
 //in the inputs, if the user types an error, a nice message will be returned
 const FormSchema = z.object({
   id: z.string(),
@@ -25,12 +28,12 @@ const FormSchema = z.object({
   date: z.string(),
 });
 
-//interface for:
+//interface for our invoices forms dates:
 //errors in each field (customerId, amount and status if user makes a mistakes,
 //the error will be an array of string, I really don´t know why)
 //message (nice message error if the customer doesn´t types and
 //tries to send the form)
-export interface StateError {
+export interface StateErrorInvoices {
   errors?: {
     customerId?: string[];
     amount?: string[];
@@ -42,14 +45,13 @@ export interface StateError {
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
 const UpdateInvoice = FormSchema.omit({ id: true, date: true });
 
-//server action to create an invoice:
-//this function is invocated in the specific form to create an invoice (in
-//the action atribute)
+//server action to CREATE AN INVOICE:
+//this function is invocated in the specific form to create an invoice (in action atribute)
 //we don´t use the argument prevState in this case, but it is a requiered prop
 //in create-form.tsx when we use the hook useFormState.
 //FormData is a constructor, and it´s an object
 //(a group of key-value pairs with all the form fields)
-export async function createInvoice(_prevState: StateError, formData: FormData) {
+export async function createInvoice(_prevState: StateErrorInvoices, formData: FormData) {
   //we parse acording the FormSchema and we get the values from the FormData object:
   //we use safeParse method, and it will return an object that contains:
   //1. data: fields information (customerId, amount, status)
@@ -101,7 +103,8 @@ export async function createInvoice(_prevState: StateError, formData: FormData) 
   redirect('/dashboard/invoices');
 }
 
-//server action to update an invoice
+//server action to UPDATE AN INVOICE
+//this function is invocated in the specific form to update an invoice (in action atribute)
 export async function updateInvoice(id: string, formData: FormData) {
   //we make constants from the formData object, parse them acording to FormSchema
   //and we get them from the especific form
@@ -129,7 +132,7 @@ export async function updateInvoice(id: string, formData: FormData) {
   redirect('/dashboard/invoices');
 }
 
-//server action to delete an invoice
+//server action to DELETE AN INVOICE
 export async function deleteInvoice(id: string) {
   try {
     await sql`DELETE FROM invoices WHERE id = ${id}`;
@@ -137,5 +140,35 @@ export async function deleteInvoice(id: string) {
     return { message: 'Deleted Invoice.' };
   } catch (error) {
     return { message: 'Database Error: Failed to Delete Invoice.' };
+  }
+}
+
+export interface StateErrorAuthentication {
+  error?: {
+    message: string;
+  };
+}
+
+//server action to AUTHENTICATION
+//this function is invocated in the specific form to log-in (in action atribute)
+//we don´t use the argument prevState in this case, but it is a requiered prop
+//in login-form.tsx when we use the hook useFormState.
+export async function authenticate(
+  _prevState: StateErrorAuthentication,
+  formData: FormData,
+): Promise<StateErrorAuthentication> {
+  try {
+    await signIn('credentials', formData);
+    return {}; //return an empty object if there is success
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return { error: { message: 'Invalid credentials.' } };
+        default:
+          return { error: { message: 'Something went wrong.' } };
+      }
+    }
+    throw error;
   }
 }

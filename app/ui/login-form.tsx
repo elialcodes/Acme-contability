@@ -1,12 +1,27 @@
+//file with a espedific form to log in
+
+'use client'; //this component will use a hook, so it has to be a client component
+
 import { lusitana } from '@/app/ui/fonts';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AtSymbolIcon, KeyIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from './button';
+//we import the function and the type StateErrorAuthentication
+import { authenticate } from '@/app/lib/actions';
+//we import the hook to managing the information that user types in the form:
+import { useFormState } from 'react-dom';
 
 export default function LoginForm() {
+  //a constant with the initial state valitation of the inputs
+  // const initialState = 'CredentialsSignin' | 'Something went wrong' | undefined;
+  //hook useFormState, in this case, we use it to managing
+  //the validation of the inputs in login form and to make an action with them.
+  //useFormState accepts 2 argument:
+  //1. state (state of the inputs validation, setted as initialState)
+  //2. action (function that will be invocated when the form is sent, setted as createInvoice)
+  const [state, action] = useFormState(authenticate, { error: { message: '' } });
   return (
-    <form className="space-y-3">
+    <form action={action} className="space-y-3">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`${lusitana.className} mb-3 text-2xl`}>Please log in to continue.</h1>
         <div className="w-full">
@@ -47,7 +62,14 @@ export default function LoginForm() {
         <Button className="mt-4 w-full">
           Log in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
         </Button>
-        <div className="flex h-8 items-end space-x-1">{/* Add form errors here */}</div>
+        <div className="flex h-8 items-end space-x-1">
+          {state?.error && (
+            <>
+              <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
+              <p className="text-sm text-red-500">{state.error.message}</p>
+            </>
+          )}
+        </div>
       </div>
     </form>
   );

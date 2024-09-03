@@ -1,5 +1,13 @@
 import AcmeLogo from '@/app/ui/acme-logo';
 import LoginForm from '@/app/ui/login-form';
+import { Metadata } from 'next';
+
+//metadata object to be includes in this page, and it would override
+//the metadata object of the parent page if this one wouldn´t have
+//a template in his metadada object.
+export const metadata: Metadata = {
+  title: 'Login',
+};
 
 export default function LoginPage() {
   return (

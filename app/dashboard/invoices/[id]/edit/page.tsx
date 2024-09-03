@@ -10,6 +10,14 @@ import { fetchInvoiceById, fetchCustomers } from '@/app/lib/data';
 //function from next/navigation Next module to use when a resource doesn´t exist,
 //it returns an 404 error in a nice way):
 import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
+
+//metadata object to be includes in this page, and it would override
+//the metadata object of the parent page if this one wouldn´t have
+//a template in his metadada object.
+export const metadata: Metadata = {
+  title: 'Edit Invoice',
+};
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;

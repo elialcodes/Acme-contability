@@ -6,14 +6,14 @@ import { CustomerField } from '@/app/lib/definitions';
 import Link from 'next/link';
 import { CheckIcon, ClockIcon, CurrencyDollarIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
-//we import the function and the type StateError
-import { createInvoice, StateError } from '@/app/lib/actions';
+//we import the function and the type StateErrorInvoices
+import { createInvoice, StateErrorInvoices } from '@/app/lib/actions';
 //we import the hook to managing the information that user types in the form:
 import { useFormState } from 'react-dom';
 
 export default function Form({ customers }: { customers: CustomerField[] }) {
   //a constant with the initial state of the inputs validation
-  const initialState: StateError = {
+  const initialState: StateErrorInvoices = {
     message: null,
     errors: {},
   };
