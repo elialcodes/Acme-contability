@@ -180,6 +180,7 @@ export async function fetchCustomers() {
     `;
 
     const customers = data.rows;
+    console.log(customers);
     return customers;
   } catch (err) {
     console.error('Database Error:', err);
