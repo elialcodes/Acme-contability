@@ -167,7 +167,6 @@ const FormSchemaCustomer = z.object({
 //tries to send the form)
 export interface StateErrorCustomers {
   errors?: {
-    id?: string[];
     name?: string[];
     email?: string[];
     image?: string[];
