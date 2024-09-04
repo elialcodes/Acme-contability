@@ -1,6 +1,5 @@
 import Image from 'next/image';
-import { UpdateCustomer } from './buttons';
-
+import { UpdateCustomer, DeleteCustomer } from './buttons';
 import { FormattedCustomersTable } from '@/app/lib/definitions';
 
 // eslint-disable-next-line @typescript-eslint/require-await
@@ -15,27 +14,36 @@ export default async function CustomersTable({ customers }: { customers: Formatt
                 <div className="flex items-center justify-between border-b pb-4">
                   <div>
                     <div className="mb-2 flex items-center">
-                      <Image
-                        src={customer.image_url}
-                        className="mr-2 rounded-full"
-                        width={28}
-                        height={28}
-                        alt={`${customer.name}'s profile picture`}
-                      />
-                      <p>{customer.name}</p>
+                      <div className="flex items-center gap-3">
+                        <Image
+                          src={customer.image_url}
+                          className="rounded-full"
+                          alt={`${customer.name}'s profile picture`}
+                          width={28}
+                          height={28}
+                        />
+                        <p>{customer.name}</p>
+                      </div>
                     </div>
                     <p className="text-sm text-gray-500">{customer.email}</p>
                   </div>
                 </div>
-                <div className="flex w-full items-center justify-between pt-4">
-                  <p className="text-xl font-medium">{customer.total_pending}</p>
-
-                  <p className="text-xl font-medium">{customer.total_paid}</p>
-                  <p className="text-xl font-medium">{customer.total_invoices}</p>
+                <div className="flex w-full items-center justify-between border-b py-5">
+                  <div className="flex w-1/2 flex-col">
+                    <p className="text-xs">Pending</p>
+                    <p className="font-medium">{customer.total_pending}</p>
+                  </div>
+                  <div className="flex w-1/2 flex-col">
+                    <p className="text-xs">Paid</p>
+                    <p className="font-medium">{customer.total_paid}</p>
+                  </div>
                   <div className="flex justify-end gap-2">
                     <UpdateCustomer id={customer.id} />
-                    {/* <DeleteCustomer id={customer.id} /> */}
+                    <DeleteCustomer id={customer.id} />
                   </div>
+                </div>
+                <div className="pt-4 text-sm">
+                  <p>{customer.total_invoices} invoices</p>
                 </div>
               </div>
             ))}
@@ -85,7 +93,7 @@ export default async function CustomersTable({ customers }: { customers: Formatt
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
                       <UpdateCustomer id={customer.id} />
-                      {/* <DeleteCustomer id={customer.id} /> */}
+                      <DeleteCustomer id={customer.id} />
                     </div>
                   </td>
                 </tr>

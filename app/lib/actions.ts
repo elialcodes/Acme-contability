@@ -143,7 +143,7 @@ export async function deleteInvoice(id: string) {
   }
 }
 
-//we define a template (or schema) zod with the same structure than our invoices forms dates.
+//we define a template (or schema) zod with the same structure than our customer forms dates.
 //in the inputs, if the user types an error, a nice message will be returned
 const FormSchemaCustomer = z.object({
   id: z.string({
@@ -165,7 +165,7 @@ const FormSchemaCustomer = z.object({
 //the error will be an array of string, I really don´t know why)
 //message (nice message error if the customer doesn´t types and
 //tries to send the form)
-export interface StateErrorCustomer {
+export interface StateErrorCustomers {
   errors?: {
     id?: string[];
     name?: string[];
@@ -176,22 +176,21 @@ export interface StateErrorCustomer {
 }
 
 const CreateCustomer = FormSchemaCustomer.omit({ id: true });
-// const UpdateCustomer = FormSchemaCustomer.omit({ id: true });
+const UpdateCustomer = FormSchemaCustomer.omit({ id: true });
 
-//server action to CREATE AN INVOICE:
+//server action to CREATE A CUSTOMER:
 //this function is invocated in the specific form to create an invoice (in action atribute)
 //we don´t use the argument prevState in this case, but it is a requiered prop
 //in create-form.tsx when we use the hook useFormState.
 //FormData is a constructor, and it´s an object
 //(a group of key-value pairs with all the form fields)
-export async function createCustomer(_prevState: StateErrorCustomer, formData: FormData) {
+export async function createCustomer(_prevState: StateErrorCustomers, formData: FormData) {
   //we parse acording the FormSchema and we get the values from the FormData object:
   //we use safeParse method, and it will return an object that contains:
   //1. data: fields information (customerId, amount, status)
   //2. success prop (boolean)
   //3. errors prop (contains information about the error)
   const validatedFields = CreateCustomer.safeParse({
-    // customerId: formData.get('customerId'),
     name: formData.get('name'),
     email: formData.get('email'),
     image: formData.get('image'),
@@ -205,14 +204,11 @@ export async function createCustomer(_prevState: StateErrorCustomer, formData: F
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Create Invoice.',
+      message: 'Missing Fields. Failed to Create Customer.',
     };
   }
   //we get the constants and prepare data for insertion into the database
   const { name, email, image } = validatedFields.data;
-
-  // customers.name, customers.email, customers.image_url;
-  // customers.id, customers.name, customers.email, customers.image_url;
 
   //we will insert the information in our DB with this SQL query
   try {
@@ -234,6 +230,43 @@ export async function createCustomer(_prevState: StateErrorCustomer, formData: F
   redirect('/dashboard/customers');
 }
 
+//server action to UPDATE A CUSTOMER
+//this function is invocated in the specific form to update an invoice (in action atribute)
+export async function updateCustomer(id: string, formData: FormData) {
+  //we make constants from the formData object, parse them acording to FormSchema
+  //and we get them from the especific form
+  const { name, email, image } = UpdateCustomer.parse({
+    name: formData.get('name'),
+    email: formData.get('email'),
+    image: formData.get('image'),
+  });
+
+  try {
+    await sql`
+  UPDATE customers
+  SET name = ${name}, email = ${email}, image_url=${image}
+  WHERE id = ${id}
+`;
+  } catch (error) {
+    //we return an error message when the insert in DB fails
+    return { message: 'Database Error: Failed to Update Customer.' };
+  }
+
+  revalidatePath('/dashboard/customers');
+
+  redirect('/dashboard/customers');
+}
+
+//server action to DELETE A CUSTOMER
+export async function deleteCustomer(id: string) {
+  try {
+    await sql`DELETE FROM customers WHERE id = ${id}`;
+    revalidatePath('/dashboard/customers');
+    return { message: 'Deleted Customer.' };
+  } catch (error) {
+    return { message: 'Database Error: Failed to Delete Customer.' };
+  }
+}
 export interface StateErrorAuthentication {
   error?: {
     message: string;

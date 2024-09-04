@@ -8,6 +8,7 @@ import { CreateCustomer } from '@/app/ui/customers/buttons';
 import Search from '@/app/ui/search';
 import { lusitana } from '@/app/ui/fonts';
 import Table from 'app/ui/customers/table';
+import { Suspense } from 'react';
 import { Metadata } from 'next';
 
 //metadata object to be includes in this page, and it would override
@@ -26,6 +27,7 @@ export default async function Page({
 }) {
   //we obtain searchParams from Search component
   const query = searchParams?.query ?? '';
+
   const totalCustomers = await fetchFilteredCustomers(query);
   return (
     <div className="w-full">
@@ -36,7 +38,10 @@ export default async function Page({
         <Search placeholder="Search customers..." />
         <CreateCustomer />
       </div>
-      <Table customers={totalCustomers} />
+      <Suspense key={query}>
+        <Table customers={totalCustomers} />
+        {/* <Table query={query} /> */}
+      </Suspense>
     </div>
   );
 }
