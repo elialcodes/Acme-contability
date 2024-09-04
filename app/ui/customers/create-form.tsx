@@ -5,7 +5,7 @@
 import Link from 'next/link';
 import { UserCircleIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
-//we import the function and the type StateErrorInvoices
+//we import the function and the type StateErrorCustomers
 import { createCustomer, StateErrorCustomers } from '@/app/lib/actions';
 //we import the hook to managing the information that user types in the form:
 import { useFormState } from 'react-dom';
@@ -20,12 +20,12 @@ export default function Form() {
   //the validation of the inputs and to make an action with them.
   //useFormState accepts 2 argument:
   //1. state (state of the inputs validation, setted as initialState)
-  //2. action (function that will be invocated when the form is sent, setted as createInvoice)
+  //2. action (function that will be invocated when the form is sent, setted as createCustomer)
   const [state, action] = useFormState(createCustomer, initialState);
   return (
     //in a form, action atribute includes an url or a place where the information
-    //will be sent. Here, we are executing createInvoice, a function to validate the fields form,
-    //sending the information to the BS with a sql query and creating an new invoice
+    //will be sent. Here, we are executing createCustomer, a function to validate the fields form,
+    //sending the information to the BS with a sql query and creating an new customer
     <form action={action}>
       <div className="mb-4">
         <label htmlFor="amount" className="mb-2 block text-sm font-medium">

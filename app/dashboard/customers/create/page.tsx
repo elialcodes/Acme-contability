@@ -10,7 +10,7 @@ import { Metadata } from 'next';
 //the metadata object of the parent page if this one wouldn´t have
 //a template in his metadada object.
 export const metadata: Metadata = {
-  title: 'Create Invoice',
+  title: 'Create Customer',
 };
 
 export default function Page() {

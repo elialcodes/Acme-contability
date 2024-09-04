@@ -21,10 +21,10 @@ export const metadata: Metadata = {
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
-  //we obtain the constants invoice y customer from the all the Promises
+  //we obtain the constants customer from the Promises
   const [customers] = await Promise.all([fetchCustomerById(id)]);
 
-  //if there is no any invoices with that id, we return the function notFound ()
+  //if there is no any customer with that id, we return the function notFound ()
   //that searchs and renders the file not-found.tsx of the same folder,
   //a special Next file to render an interface inside a specific route segment ()
   if (!customers) {

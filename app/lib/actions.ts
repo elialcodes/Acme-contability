@@ -1,5 +1,5 @@
-//file with server actions: functions to create, update and delete invoices
-//and authenticate function
+//file with server actions: functions to create, update and delete invoices,
+//functions to create, update and delete customers and authenticate function
 //These server actions will be executed in the server side and will be invocated
 //in their respective forms.
 
@@ -160,7 +160,7 @@ const FormSchemaCustomer = z.object({
   }),
 });
 
-//interface for our invoices forms dates:
+//interface for our customers forms dates:
 //errors in each field (customerId, amount and status if user makes a mistakes,
 //the error will be an array of string, I really don´t know why)
 //message (nice message error if the customer doesn´t types and
@@ -178,7 +178,7 @@ const CreateCustomer = FormSchemaCustomer.omit({ id: true });
 const UpdateCustomer = FormSchemaCustomer.omit({ id: true });
 
 //server action to CREATE A CUSTOMER:
-//this function is invocated in the specific form to create an invoice (in action atribute)
+//this function is invocated in the specific form to create a customer (in action atribute)
 //we don´t use the argument prevState in this case, but it is a requiered prop
 //in create-form.tsx when we use the hook useFormState.
 //FormData is a constructor, and it´s an object
@@ -224,13 +224,13 @@ export async function createCustomer(_prevState: StateErrorCustomers, formData: 
   //a new request to the server.
   revalidatePath('/dashboard/customers');
 
-  //after the user creates a new invoice, we can redirect him
+  //after the user creates a new customer, we can redirect him
   //to the previus page
   redirect('/dashboard/customers');
 }
 
 //server action to UPDATE A CUSTOMER
-//this function is invocated in the specific form to update an invoice (in action atribute)
+//this function is invocated in the specific form to update a customer (in action atribute)
 export async function updateCustomer(id: string, formData: FormData) {
   //we make constants from the formData object, parse them acording to FormSchema
   //and we get them from the especific form
