@@ -14,7 +14,7 @@ import { AuthError } from 'next-auth'; //we have istalled NextAuth previously
 
 //we define a template (or schema) zod with the same structure than our invoices forms dates.
 //in the inputs, if the user types an error, a nice message will be returned
-const FormSchema = z.object({
+const FormSchemaInvoice = z.object({
   id: z.string(),
   customerId: z.string({
     invalid_type_error: 'Please select a customer.', //nice message
@@ -42,8 +42,8 @@ export interface StateErrorInvoices {
   message?: string | null;
 }
 
-const CreateInvoice = FormSchema.omit({ id: true, date: true });
-const UpdateInvoice = FormSchema.omit({ id: true, date: true });
+const CreateInvoice = FormSchemaInvoice.omit({ id: true, date: true });
+const UpdateInvoice = FormSchemaInvoice.omit({ id: true, date: true });
 
 //server action to CREATE AN INVOICE:
 //this function is invocated in the specific form to create an invoice (in action atribute)
@@ -141,6 +141,97 @@ export async function deleteInvoice(id: string) {
   } catch (error) {
     return { message: 'Database Error: Failed to Delete Invoice.' };
   }
+}
+
+//we define a template (or schema) zod with the same structure than our invoices forms dates.
+//in the inputs, if the user types an error, a nice message will be returned
+const FormSchemaCustomer = z.object({
+  id: z.string({
+    invalid_type_error: 'Please select a customer.', //nice message
+  }),
+  name: z.string({
+    invalid_type_error: 'Please enter a name.', //nice message
+  }),
+  email: z.string({
+    invalid_type_error: 'Please enter an email.', //nice message
+  }),
+  image: z.string({
+    invalid_type_error: 'Please enter a picture.', //nice message
+  }),
+});
+
+//interface for our invoices forms dates:
+//errors in each field (customerId, amount and status if user makes a mistakes,
+//the error will be an array of string, I really don´t know why)
+//message (nice message error if the customer doesn´t types and
+//tries to send the form)
+export interface StateErrorCustomer {
+  errors?: {
+    id?: string[];
+    name?: string[];
+    email?: string[];
+    image?: string[];
+  };
+  message?: string | null;
+}
+
+const CreateCustomer = FormSchemaCustomer.omit({ id: true });
+// const UpdateCustomer = FormSchemaCustomer.omit({ id: true });
+
+//server action to CREATE AN INVOICE:
+//this function is invocated in the specific form to create an invoice (in action atribute)
+//we don´t use the argument prevState in this case, but it is a requiered prop
+//in create-form.tsx when we use the hook useFormState.
+//FormData is a constructor, and it´s an object
+//(a group of key-value pairs with all the form fields)
+export async function createCustomer(_prevState: StateErrorCustomer, formData: FormData) {
+  //we parse acording the FormSchema and we get the values from the FormData object:
+  //we use safeParse method, and it will return an object that contains:
+  //1. data: fields information (customerId, amount, status)
+  //2. success prop (boolean)
+  //3. errors prop (contains information about the error)
+  const validatedFields = CreateCustomer.safeParse({
+    // customerId: formData.get('customerId'),
+    name: formData.get('name'),
+    email: formData.get('email'),
+    image: formData.get('image'),
+  });
+
+  //if form validation fails, return an object with 2 keys:
+  //1. errors: an object with all the information about the error, and with
+  //flatten().fieldErrors we can convert these errors into simple format
+  //(flatten() aplana, lo hace algo más sencillo y legible)
+  //2. message: a general message that says missing fields
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Create Invoice.',
+    };
+  }
+  //we get the constants and prepare data for insertion into the database
+  const { name, email, image } = validatedFields.data;
+
+  // customers.name, customers.email, customers.image_url;
+  // customers.id, customers.name, customers.email, customers.image_url;
+
+  //we will insert the information in our DB with this SQL query
+  try {
+    await sql`
+    INSERT INTO customers (name, email, image_url)
+    VALUES (${name}, ${email}, ${image})
+  `;
+  } catch (error) {
+    return { message: 'Database Error: Failed to Create Customer' };
+  }
+
+  //we delete the previous cache of the route in Next with this line
+  //so, we clean and prepare the cache to save a new route with
+  //a new request to the server.
+  revalidatePath('/dashboard/customers');
+
+  //after the user creates a new invoice, we can redirect him
+  //to the previus page
+  redirect('/dashboard/customers');
 }
 
 export interface StateErrorAuthentication {
