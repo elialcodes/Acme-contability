@@ -5,9 +5,9 @@
 //there are a lot of invoices and only 6 invoices for page. In this file the user
 //can make click on whatever page to see the invoices of each page.
 
-import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Link from 'next/link';
+import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { generatePagination } from '@/app/lib/utils';
 //useSearchParams: a client component hook that lets you access the URL's search parameters.
 //usePathName: a client component hook that lets you read the current URL's pathname.

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { UpdateCustomer, DeleteCustomer } from './buttons';
+import { UpdateCustomerButton, DeleteCustomerButton } from './buttons';
 import { FormattedCustomersTable } from '@/app/lib/definitions';
 
 // eslint-disable-next-line @typescript-eslint/require-await
@@ -38,8 +38,8 @@ export default async function CustomersTable({ customers }: { customers: Formatt
                     <p className="font-medium">{customer.total_paid}</p>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <UpdateCustomer id={customer.id} />
-                    <DeleteCustomer id={customer.id} />
+                    <UpdateCustomerButton id={customer.id} />
+                    <DeleteCustomerButton id={customer.id} />
                   </div>
                 </div>
                 <div className="pt-4 text-sm">
@@ -92,8 +92,8 @@ export default async function CustomersTable({ customers }: { customers: Formatt
                   <td className="whitespace-nowrap px-3 py-3">{customer.total_paid}</td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <UpdateCustomer id={customer.id} />
-                      <DeleteCustomer id={customer.id} />
+                      <UpdateCustomerButton id={customer.id} />
+                      <DeleteCustomerButton id={customer.id} />
                     </div>
                   </td>
                 </tr>

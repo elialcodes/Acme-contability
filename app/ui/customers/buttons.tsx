@@ -1,8 +1,8 @@
+import Link from 'next/link';
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { deleteCustomer } from '@/app/lib/actions';
-import Link from 'next/link';
 
-export function CreateCustomer() {
+export function CreateCustomerButton() {
   return (
     <Link
       href={`/dashboard/customers/create`}
@@ -13,7 +13,7 @@ export function CreateCustomer() {
   );
 }
 
-export function UpdateCustomer({ id }: { id: string }) {
+export function UpdateCustomerButton({ id }: { id: string }) {
   return (
     <Link href={`/dashboard/customers/${id}/edit`} className="rounded-md border p-2 hover:bg-gray-100">
       <PencilIcon className="w-5" />
@@ -21,7 +21,7 @@ export function UpdateCustomer({ id }: { id: string }) {
   );
 }
 
-export function DeleteCustomer({ id }: { id: string }) {
+export function DeleteCustomerButton({ id }: { id: string }) {
   const deleteCustomerWithId = deleteCustomer.bind(null, id);
   return (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises

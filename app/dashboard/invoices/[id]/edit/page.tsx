@@ -4,7 +4,7 @@
 //to create a new route based in dates when we don´t
 //know the name of these dates.
 
-import Form from '@/app/ui/invoices/edit-form';
+import EditInvoiceForm from '@/app/ui/invoices/edit-form';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { fetchInvoiceById, fetchCustomers } from '@/app/lib/data';
 //function from next/navigation Next module to use when a resource doesn´t exist,
@@ -43,7 +43,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           },
         ]}
       />
-      <Form invoice={invoice} customers={customers} />
+      <EditInvoiceForm invoice={invoice} customers={customers} />
     </main>
   );
 }

@@ -1,5 +1,5 @@
 //this is a special next file, when page.tsx file returns an error
-//(specially when a resource doesn´t exist, 404 error), Next searches
+//(specially when a resource doesn´t exist, a 404 error), Next searches
 //the not-found.tsx file in the same folder to show an specefic interface
 //to the user (in this case a message with an 404 error and a Go Back button).
 

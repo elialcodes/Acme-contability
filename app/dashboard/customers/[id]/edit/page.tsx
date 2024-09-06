@@ -4,7 +4,7 @@
 //to create a new route based in dates when we don´t
 //know the name of these dates.
 
-import Form from '@/app/ui/customers/edit-form';
+import EditCustomerForm from '@/app/ui/customers/edit-form';
 import Breadcrumbs from '@/app/ui/customers/breadcrumbs';
 import { fetchCustomerById } from '@/app/lib/data';
 //function from next/navigation Next module to use when a resource doesn´t exist,
@@ -43,7 +43,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           },
         ]}
       />
-      <Form customer={customers} />
+      <EditCustomerForm customer={customers} />
     </main>
   );
 }

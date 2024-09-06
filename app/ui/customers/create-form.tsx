@@ -10,15 +10,15 @@ import { createCustomer, StateErrorCustomers } from '@/app/lib/actions';
 //we import the hook to managing the information that user types in the form:
 import { useFormState } from 'react-dom';
 
-export default function Form() {
+export default function CreateCustomerForm() {
   //a constant with the initial state of the inputs validation
   const initialState: StateErrorCustomers = {
     message: null,
     errors: {},
   };
   //hook useFormState, in this case, we use it to managing
-  //the validation of the inputs and to make an action with them.
-  //useFormState accepts 2 argument:
+  //the validation of the inputs and to make an action with them,
+  //so useFormState accepts 2 argument:
   //1. state (state of the inputs validation, setted as initialState)
   //2. action (function that will be invocated when the form is sent, setted as createCustomer)
   const [state, action] = useFormState(createCustomer, initialState);

@@ -1,10 +1,11 @@
 'use client'; // this React directive tells us that this component must be
 //render from client side (CSR, client side rendering)
-import { UserGroupIcon, HomeIcon, DocumentDuplicateIcon } from '@heroicons/react/24/outline';
+
 import Link from 'next/link'; //Link component instead of <a> in the return
+import clsx from 'clsx'; //CSS library to apply conditionally className
+import { UserGroupIcon, HomeIcon, DocumentDuplicateIcon } from '@heroicons/react/24/outline';
 //usePathname is a hook which detects the current url in the navigator
 import { usePathname } from 'next/navigation';
-import clsx from 'clsx'; //CSS library to apply conditionally className
 
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.

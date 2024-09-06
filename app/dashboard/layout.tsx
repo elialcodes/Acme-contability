@@ -1,4 +1,4 @@
-//When we need to share some user interface between several pages of the same
+//When we need to share some specific interface between several pages of the same
 //folder, we can create a layout.tsx file in the root of the folder and include
 //that interface (SideNav in this case). So, that interface would be part of
 //the pages nested in the same folder.

@@ -7,7 +7,7 @@ import { Metadata } from 'next';
 //inherit in all his children pages.
 //In title, we can write the same title for all the children or we can
 //write a template and the children pages will be customized it:
-//%s means any word, so, we can put a customized title in the children pages
+//%s means whatever word, so, we can put a customized title in the children pages
 //we want (for example, in app/dashboard/invoice/page.tsx the title
 //will be "Invoices | Acme Dashboard").
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 //Root layout:
-//layout file recives children as a prop and this will be any HTML.
+//layout file recives children as a prop and this will be whatever HTML.
 //With root layout we can share some feature across all pages of its children.
 //In this case, root layout is used to modify <html> and <body> tags.
 export default function RootLayout({ children }: { children: React.ReactNode }) {

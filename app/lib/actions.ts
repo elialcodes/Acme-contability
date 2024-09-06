@@ -1,7 +1,9 @@
-//file with server actions: functions to create, update and delete invoices,
-//functions to create, update and delete customers and authenticate function
-//These server actions will be executed in the server side and will be invocated
-//in their respective forms.
+//file with server actions:
+//1. functions to create, update and delete invoices
+//2. functions to create, update and delete customers
+//3. authenticate function
+//These actions will be executed in the server side (they are
+//server actions) and will be invocated in their respective forms.
 
 'use server'; //with this line we say all functions are server actions
 
@@ -12,7 +14,7 @@ import { redirect } from 'next/navigation';
 import { signIn } from '@/auth'; //we import signIn function from auth.ts file
 import { AuthError } from 'next-auth'; //we have istalled NextAuth previously
 
-//we define a template (or schema) zod with the same structure than our invoices forms dates.
+//we define a template (or schema) zod with the same structure than our invoices form dates.
 //in the inputs, if the user types an error, a nice message will be returned
 const FormSchemaInvoice = z.object({
   id: z.string(),
@@ -29,7 +31,7 @@ const FormSchemaInvoice = z.object({
 });
 
 //interface for our invoices forms dates:
-//errors in each field (customerId, amount and status if user makes a mistakes,
+//errors in each field (customerId, amount and status if user makes mistakes,
 //the error will be an array of string, I really don´t know why)
 //message (nice message error if the customer doesn´t types and
 //tries to send the form)
@@ -47,16 +49,16 @@ const UpdateInvoice = FormSchemaInvoice.omit({ id: true, date: true });
 
 //server action to CREATE AN INVOICE:
 //this function is invocated in the specific form to create an invoice (in action atribute)
-//we don´t use the argument prevState in this case, but it is a requiered prop
-//in create-form.tsx when we use the hook useFormState.
+//here we don´t use the argument prevState in this case, but it is a
+//requiered prop in create-form.tsx when we use the hook useFormState.
 //FormData is a constructor, and it´s an object
 //(a group of key-value pairs with all the form fields)
 export async function createInvoice(_prevState: StateErrorInvoices, formData: FormData) {
   //we parse acording the FormSchema and we get the values from the FormData object:
   //we use safeParse method, and it will return an object that contains:
   //1. data: fields information (customerId, amount, status)
-  //2. success prop (boolean)
-  //3. errors prop (contains information about the error)
+  //2. success: boolean prop
+  //3. errors: prop with the information about the error
   const validatedFields = CreateInvoice.safeParse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
@@ -74,13 +76,14 @@ export async function createInvoice(_prevState: StateErrorInvoices, formData: Fo
       message: 'Missing Fields. Failed to Create Invoice.',
     };
   }
-  //we get the constants and prepare data for insertion into the database
+  //we get the constants from the object
   const { customerId, amount, status } = validatedFields.data;
 
-  //we parse the amount in cents to avoid floats
+  //we prepare data for insertion into the database:
+  //1. we parse the amount in cents to avoid floats
   const amountInCents = amount * 100;
 
-  //we create a date with AAAA-MM-DD format
+  //2. we create a date with AAAA-MM-DD format
   const date = new Date().toISOString().split('T')[0]; //
 
   //we will insert the information in our DB with this SQL query
@@ -161,7 +164,7 @@ const FormSchemaCustomer = z.object({
 });
 
 //interface for our customers forms dates:
-//errors in each field (customerId, amount and status if user makes a mistakes,
+//errors in each field (name, email, image if user makes a mistakes,
 //the error will be an array of string, I really don´t know why)
 //message (nice message error if the customer doesn´t types and
 //tries to send the form)
@@ -206,7 +209,7 @@ export async function createCustomer(_prevState: StateErrorCustomers, formData: 
       message: 'Missing Fields. Failed to Create Customer.',
     };
   }
-  //we get the constants and prepare data for insertion into the database
+  //we get the constants
   const { name, email, image } = validatedFields.data;
 
   //we will insert the information in our DB with this SQL query

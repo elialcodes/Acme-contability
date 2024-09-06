@@ -1,10 +1,10 @@
-import Form from '@/app/ui/invoices/create-form';
+import CreateInvoiceForm from '@/app/ui/invoices/create-form';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { fetchCustomers } from '@/app/lib/data';
 import { Metadata } from 'next';
 
 //this is a server component: customers are gotten with a fetch
-//function, and the HTML is prerrender in the server and sent to
+//function in the server, and the HTML is prerrender in the server and sent to
 //client side.
 
 //metadata object to be includes in this page, and it would override
@@ -29,7 +29,7 @@ export default async function Page() {
           },
         ]}
       />
-      <Form customers={customers} />
+      <CreateInvoiceForm customers={customers} />
     </main>
   );
 }

@@ -1,4 +1,4 @@
-import Form from '@/app/ui/customers/create-form';
+import CreateCustomerForm from '@/app/ui/customers/create-form';
 import Breadcrumbs from '@/app/ui/customers/breadcrumbs';
 import { Metadata } from 'next';
 
@@ -26,7 +26,7 @@ export default function Page() {
           },
         ]}
       />
-      <Form />
+      <CreateCustomerForm />
     </main>
   );
 }

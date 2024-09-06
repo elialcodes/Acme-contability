@@ -2,10 +2,10 @@
 // (the main component in this case, with the route: /)
 
 import AcmeLogo from '@/app/ui/acme-logo';
-import { lusitana } from '@/app/ui/fonts';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link'; //import link module from next
 import Image from 'next/image'; //import image module from next
+import { lusitana } from '@/app/ui/fonts';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 export default function Page() {
   return (

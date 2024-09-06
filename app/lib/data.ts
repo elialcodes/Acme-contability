@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 //With this file we obtain the information from the database.
-//We import sql funtion from vercel/postgres.
+//We import sql funtion from vercel/postgresSQL.
 //This file use async/await functions and SQL scripts.
 //The received data from database will be imported by the components
 //to be rendered.
 
 import { sql } from '@vercel/postgres';
+//we import the types:
 import {
   CustomerField,
-  CustomersTableType,
+  CustomersTable,
   CustomerForm,
   InvoiceForm,
   InvoicesTable,
@@ -192,7 +193,7 @@ export async function fetchFilteredCustomers(query: string) {
   try {
     console.log(query);
     const data = query
-      ? await sql<CustomersTableType>`
+      ? await sql<CustomersTable>`
 		SELECT
 		  customers.id,
 		  customers.name,
@@ -207,7 +208,7 @@ export async function fetchFilteredCustomers(query: string) {
     GROUP BY customers.id, customers.name, customers.email, customers.image_url
 		ORDER BY customers.name ASC;
 	  `
-      : await sql<CustomersTableType>`
+      : await sql<CustomersTable>`
 		SELECT
 		  customers.id,
 		  customers.name,

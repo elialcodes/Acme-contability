@@ -1,9 +1,9 @@
 'use client';
 
+import Link from 'next/link';
 import { CustomerForm } from '@/app/lib/definitions';
 import { updateCustomer } from '@/app/lib/actions';
 import { UserCircleIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
 import { Button } from '@/app/ui/button';
 
 export default function EditCustomerForm({ customer }: { customer: CustomerForm }) {
