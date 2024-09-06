@@ -90,7 +90,7 @@ export async function createInvoice(_prevState: StateErrorInvoices, formData: Fo
   try {
     await sql`
     INSERT INTO invoices (customer_id, amount, status, date)
-    VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
+    VALUES (${customerId}, ${amountInCents}, ${status}, ${date});
   `;
   } catch (error) {
     return { message: 'Database Error: Failed to Create Invoice' };
@@ -123,7 +123,7 @@ export async function updateInvoice(id: string, formData: FormData) {
     await sql`
   UPDATE invoices
   SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
-  WHERE id = ${id}
+  WHERE id = ${id};
 `;
   } catch (error) {
     //we return an error message when the insert in DB fails
@@ -138,7 +138,7 @@ export async function updateInvoice(id: string, formData: FormData) {
 //server action to DELETE AN INVOICE
 export async function deleteInvoice(id: string) {
   try {
-    await sql`DELETE FROM invoices WHERE id = ${id}`;
+    await sql`DELETE FROM invoices WHERE id = ${id};`;
     revalidatePath('/dashboard/invoices');
     return { message: 'Deleted Invoice.' };
   } catch (error) {
@@ -216,7 +216,7 @@ export async function createCustomer(_prevState: StateErrorCustomers, formData: 
   try {
     await sql`
     INSERT INTO customers (name, email, image_url)
-    VALUES (${name}, ${email}, ${image})
+    VALUES (${name}, ${email}, ${image});
   `;
   } catch (error) {
     return { message: 'Database Error: Failed to Create Customer' };
@@ -247,7 +247,7 @@ export async function updateCustomer(id: string, formData: FormData) {
     await sql`
   UPDATE customers
   SET name = ${name}, email = ${email}, image_url=${image}
-  WHERE id = ${id}
+  WHERE id = ${id};
 `;
   } catch (error) {
     //we return an error message when the insert in DB fails
@@ -262,7 +262,7 @@ export async function updateCustomer(id: string, formData: FormData) {
 //server action to DELETE A CUSTOMER
 export async function deleteCustomer(id: string) {
   try {
-    await sql`DELETE FROM customers WHERE id = ${id}`;
+    await sql`DELETE FROM customers WHERE id = ${id};`;
     revalidatePath('/dashboard/customers');
     return { message: 'Deleted Customer.' };
   } catch (error) {

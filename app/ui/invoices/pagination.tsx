@@ -30,7 +30,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
     //the url would be /dashboard/invoices?page=2
     return `${pathname}?${params.toString()}`;
   };
-  const allPages = generatePagination(currentPage, totalPages);
+  const allPages: (string | number)[] = generatePagination(currentPage, totalPages);
 
   return (
     <>
@@ -50,7 +50,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
 
             return (
               <PaginationNumber
-                key={page}
+                key={index}
                 href={createPageURL(page)}
                 page={page}
                 position={position}

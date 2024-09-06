@@ -5,7 +5,7 @@ import { invoices, customers, revenue, users } from '../lib/placeholder-data';
 const client = await db.connect();
 
 async function seedUsers() {
-  await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+  await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`;
   await client.sql`
     CREATE TABLE IF NOT EXISTS users (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -30,7 +30,7 @@ async function seedUsers() {
 }
 
 async function seedInvoices() {
-  await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+  await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`;
 
   await client.sql`
     CREATE TABLE IF NOT EXISTS invoices (
@@ -56,7 +56,7 @@ async function seedInvoices() {
 }
 
 async function seedCustomers() {
-  await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+  await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`;
 
   await client.sql`
     CREATE TABLE IF NOT EXISTS customers (
@@ -103,16 +103,16 @@ async function seedRevenue() {
 
 export async function GET() {
   try {
-    await client.sql`BEGIN`;
+    await client.sql`BEGIN;`;
     await seedUsers();
     await seedCustomers();
     await seedInvoices();
     await seedRevenue();
-    await client.sql`COMMIT`;
+    await client.sql`COMMIT;`;
 
     return Response.json({ message: 'Database seeded successfully' });
   } catch (error) {
-    await client.sql`ROLLBACK`;
+    await client.sql`ROLLBACK;`;
     return Response.json({ error }, { status: 500 });
   }
 }

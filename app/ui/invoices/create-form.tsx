@@ -23,6 +23,7 @@ export default function CreateInvoiceForm({ customers }: { customers: CustomerFi
   //1. state (state of the inputs validation, setted as initialState)
   //2. action (function that will be invocated when the form is sent, setted as createInvoice)
   const [state, action] = useFormState(createInvoice, initialState);
+
   return (
     //in a form, action atribute includes an url or a place where the information
     //will be sent. Here, we are executing createInvoice, a function to validate the fields form,
